@@ -19,6 +19,7 @@
 
 -module(mod_zmr).
 -author("Andreas Stenius <andreas.stenius@astekk.se>").
+%-behaviour(gen_server).
 
 -mod_title("ZMR Server").
 -mod_description("A Zotonic module repository server.").
@@ -27,13 +28,26 @@
 %% interface functions
 -export([
 	 init/1
+%	 handle_call/3,
+%	 handle_cast/2,
+%	 handle_info/2,
+%	 terminate/2,
+%	 code_change/3,
+%	 start_link/1
 	]).
 
--include("zotonic.hrl").
+-include_lib("zotonic.hrl").
+%-record(state, {context}).
 
+%start_link(Args) when is_list(Args) ->
+%    gen_server:start_link(?MODULE, Args, []).
 
+%init(Args) ->
 init(Context) ->
+%    process_flag(trap_exit, true),
+%    {context, Context} = proplists:lookup(context, Args),
     z_datamodel:manage(?MODULE, datamodel(), Context),
+%    {ok, #state{context = z_context:new(Context)}}.
     ok.
 
 datamodel() ->
@@ -59,7 +73,12 @@ datamodel() ->
       [
        {zmr_scm,
 	[{title, <<"Source Code Management">>}],
-	[{zmr_repository, zmr_scm_tool}]}
+	[{zmr_repository, zmr_scm_tool}]},
+       
+       %% perhaps use the existing 'relation' predicate for this instead... ?
+       {zmr_module_release,
+	[{title, <<"Release for">>}],
+	[{zmr_release, zmr_repository}]}
       ]
      },
 
@@ -90,12 +109,24 @@ datamodel() ->
 	 {summary, <<"The repository for ZMR itself.">>},
 	 {body, <<"Zotonic Modules Repository (zmr) is a server for hosting releases of zotonic modules.">>},
 	 {zmr_repository_path, <<"https://bitbucket.astekk.se/zmr">>}
+	]},
+
+       {zmr_default_release,
+	zmr_release,
+	[
+	 {title, <<"Default ZMR release (head)">>},
+	 {zmr_branch, <<"default">>}
 	]}
       ]},
 
      {edges,
       [
-       {zmr_repo, zmr_scm, zmr_scm_hg}
+       {zmr_repo, zmr_scm, zmr_scm_hg},
+       {zmr_default_release, zmr_module_release, zmr_repo},
+
+       %% using the existing 'relation' predicate
+       {zmr_repo, relation, zmr_default_release},
+       {zmr_default_release, relation, zmr_repo}
       ]}
 
     ].
