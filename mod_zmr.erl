@@ -47,6 +47,7 @@ init(Context) ->
 %    process_flag(trap_exit, true),
 %    {context, Context} = proplists:lookup(context, Args),
     z_datamodel:manage(?MODULE, datamodel(), Context),
+    z_path:files_subdir_ensure("zmr_repos", Context),
 %    {ok, #state{context = z_context:new(Context)}}.
     ok.
 

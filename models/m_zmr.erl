@@ -36,15 +36,25 @@ m_find_value(Id, #m{value=repo} = M, Context) ->
 			    undefined
 		    end
 	    end
-    end.
+    end;
 
-%m_find_value(_, _, _) -> undefined.
+m_find_value(log, #m{value={repo, Id}}=M, _Context) ->
+    M#m{value={repo_log, ["example data", "should retreive this", "from the source repo", "in a suitable format"]}}.
+
+%m_find_value(exist, #m{value={repo, Id}}=M, Context) ->
+    
+
+
+
+m_to_list(#m{value={repo_log, Log}}, _Context) ->
+    Log;
 
 m_to_list(_, _) ->
     undefined.
 
-m_value(_, _) ->
-    undefined.
+
+m_value(#m{value={repo, Id}}, _Context) ->
+    Id.
 
 
 
