@@ -27,7 +27,8 @@
 
 %% interface functions
 -export([
-	 init/1
+	 init/1,
+	 repo_path/2
 %	 handle_call/3,
 %	 handle_cast/2,
 %	 handle_info/2,
@@ -50,6 +51,11 @@ init(Context) ->
     z_path:files_subdir_ensure("zmr_repos", Context),
 %    {ok, #state{context = z_context:new(Context)}}.
     ok.
+
+
+repo_path(RepoId, Context) ->
+    z_path:files_subdir(filename:join("zmr_repos", z_convert:to_list(RepoId)), Context).
+
 
 datamodel() ->
     [
@@ -90,7 +96,7 @@ datamodel() ->
 	[
 	 {title, <<"Mercurial (hg)">>},
 	 {zmr_command, <<"hg">>},
-	 {zmr_arg_checkout, <<"clone $repo $dest">>},
+	 {zmr_arg_checkout, <<"clone --noupdate $source $target">>},
 	 {zmr_arg_history, <<"log">>}
 	]},
 
@@ -99,7 +105,7 @@ datamodel() ->
 	[
 	 {title, <<"Git">>},
 	 {zmr_command, <<"git">>},
-	 {zmr_arg_checkout, <<"clone $repo $dest">>},
+	 {zmr_arg_checkout, <<"clone $source $target">>},
 	 {zmr_arg_history, <<"log">>}
 	]},
 	

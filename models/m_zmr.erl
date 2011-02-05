@@ -39,10 +39,10 @@ m_find_value(Id, #m{value=repo} = M, Context) ->
     end;
 
 m_find_value(log, #m{value={repo, Id}}=M, _Context) ->
-    M#m{value={repo_log, ["example data", "should retreive this", "from the source repo", "in a suitable format"]}}.
+    M#m{value={repo_log, ["example data", "should retreive this", "from the source repo", "in a suitable format"]}};
 
-%m_find_value(exist, #m{value={repo, Id}}=M, Context) ->
-    
+m_find_value(exist, #m{value={repo, Id}}, Context) ->
+    filelib:is_dir(mod_zmr:repo_path(Id, Context)).
 
 
 

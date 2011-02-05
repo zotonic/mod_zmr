@@ -11,8 +11,15 @@
 <div class="form-item clearfix">
 <label for="zmr_repository_path">{_ Repository path _}</label>
 <input id="zmr_repository_path" type="text" name="zmr_repository_path" value="{{ r.zmr_repository_path }}" style="width: 80%" />
-</div>
 
+<div id="repo_status">
+{% if m.zmr.repo[id].exist %} 
+	Repository is cloned.
+{% else %}
+	{% button text="Clone repository" action={clone_repo id=id target="repo_status"} %}
+{% endif %}
+</div>
+</div>
 
 </fieldset>
 </div>
