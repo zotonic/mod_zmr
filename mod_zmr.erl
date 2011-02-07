@@ -75,14 +75,14 @@ get_cmd(RepoId, Context, [Op|Vars]) when is_atom(Op) ->
 		 clone -> zmr_arg_clone;
 		 log -> zmr_arg_log
 	     end,
-    ToolId = m_edge:object(RepoId, zmr_scm, 1, Context),
-    Op = m_rsc:p(ToolId, OpProp, Context),
+    ToolId = m_edge:object(RepoId, zmr_repo_scm, 1, Context),
+    OpVal = z_convert:to_list(m_rsc:p(ToolId, OpProp, Context)),
     Args = lists:foldl(fun({From, To}, Arg) -> re:replace(Arg, From, To, [{return, list}]) end,
-		       Op,
+		       OpVal,
 		       Vars),
     Exe = z_convert:to_list(m_rsc:p(ToolId, zmr_command, Context)),
     Cmd = lists:flatten([Exe, " ", Args]),
-    ?PRINT(Cmd),
+    %?PRINT(Cmd),
     Cmd.
 
     

@@ -19,6 +19,7 @@
 
 -include_lib("zotonic.hrl").
 
+
 m_find_value(repo, #m{value=undefined} = M, _Context) ->
     M#m{value=repo};
 m_find_value(Id, #m{value=repo} = M, Context) ->
@@ -38,16 +39,20 @@ m_find_value(Id, #m{value=repo} = M, Context) ->
 	    end
     end;
 
-m_find_value(log, #m{value={repo, Id}}=M, _Context) ->
-    M#m{value={repo_log, ["example data", "should retreive this", "from the source repo", "in a suitable format"]}};
+m_find_value(log, #m{value={repo, Id}}=M, Context) ->
+    M#m{value={repo_log, get_repo_log(Id, Context)}};
 
 m_find_value(exist, #m{value={repo, Id}}, Context) ->
-    filelib:is_dir(mod_zmr:repo_path(Id, Context)).
+    filelib:is_dir(mod_zmr:repo_path(Id, Context));
+
+m_find_value(Key, #m{value={repo_log_entry, Entry}}, _Context) ->
+    %?PRINT(Key),
+    %?PRINT(Entry),
+    proplists:get_value(Key, Entry).
 
 
-
-m_to_list(#m{value={repo_log, Log}}, _Context) ->
-    Log;
+m_to_list(#m{value={repo_log, Log}}=M, _Context) ->
+    [M#m{value={repo_log_entry, Entry}} || Entry <- Log];
 
 m_to_list(_, _) ->
     undefined.
@@ -57,5 +62,36 @@ m_value(#m{value={repo, Id}}, _Context) ->
     Id.
 
 
+get_repo_log(Id, Context) -> 
+    Repo = mod_zmr:repo_path(Id, Context),
+    Cmd = lists:flatten(["cd ", Repo, " && ", mod_zmr:get_cmd(Id, Context, [log])]),
+    Output = os:cmd(Cmd),
+    %?PRINT(Output),
+    {match, Match} = re:run(Output, "(?m)^(\\w+):\\s*(.*)$|^$", [global, {capture, all_but_first, list}]),
+    match_to_proplist(Match).
 
+%%
+% Matches are reversed after this conversion. Use lists:reverse to restore, if needed
+
+match_to_proplist([]) -> [];
+match_to_proplist(Match) -> match_to_proplist(Match, [[]]).
+
+%keeps props in order, but less efficient
+%match_to_proplist([[Key, Value]|MatchList], [H|Acc]) -> match_to_proplist(MatchList, [H++[{Key, Value}]|Acc]);
+% props in reverse order
+match_to_proplist([[Key, Value]|MatchList], [H|Acc]) -> 
+    match_to_proplist(MatchList, 
+		      [
+		       [{z_convert:to_atom(string:to_lower(Key)), Value}|H]
+		       |Acc
+		      ]
+		     );
+
+match_to_proplist([[]], Acc) -> Acc;
+
+% could call lists:reverse here to restore prop order, if needed
+match_to_proplist([[]|MatchList], Acc) -> match_to_proplist(MatchList, [[]|Acc]);
+
+match_to_proplist([], Acc) -> Acc.
+    
 
