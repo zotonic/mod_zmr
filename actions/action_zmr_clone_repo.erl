@@ -18,7 +18,12 @@
 
 render_action(TriggerId, TargetId, Args, Context) ->
     RepoId = proplists:get_value(id, Args),
-    {PostbackMsgJS, _PickledPostback} = z_render:make_postback({clone_repo, RepoId}, click, TriggerId, TargetId, ?MODULE, Context),
+    {PostbackMsgJS, _PickledPostback} = z_render:make_postback({clone_repo, RepoId}, 
+							       click, 
+							       TriggerId, 
+							       TargetId,
+							       ?MODULE,
+							       Context),
     {PostbackMsgJS, Context}.
 
 event({postback, {clone_repo, RepoId}, _TriggerId, TargetId}, Context) ->
@@ -28,16 +33,14 @@ event({postback, {clone_repo, RepoId}, _TriggerId, TargetId}, Context) ->
 
 clone_repo(TargetId, RepoId, Context) ->
     Context1 = update_progress(TargetId, [{message, "Cloning repository..."}], Context),
-    Source = m_rsc:p(RepoId, zmr_repository_path, Context1),
-    Target = mod_zmr:repo_path(RepoId, Context1),
-    ToolId = m_edge:object(RepoId, zmr_scm, 1, Context1),
-    Cmd = z_convert:to_list(m_rsc:p(ToolId, zmr_command, Context1)),
-    Arg = m_rsc:p(ToolId, zmr_arg_checkout, Context1),
-    Arg1 = re:replace(Arg, "\\$source", Source, [{return, list}]),
-    Arg2 = re:replace(Arg1, "\\$target", Target, [{return, list}]),
-    Cmd1 = lists:flatten([Cmd, " ", Arg2]),
-    ?PRINT(Cmd1),
-    Result = os:cmd(Cmd1),
+    Source = mod_zmr:repo_source(RepoId, Context),
+    Target = mod_zmr:repo_path(RepoId, Context),
+    Cmd = mod_zmr:get_cmd(RepoId, Context, 
+			  [clone, 
+			   {"\\$source", Source}, 
+			   {"\\$target", Target}
+			  ]),
+    Result = os:cmd(Cmd),
     ?PRINT(Result),
     Message = lists:flatten(["Clone Repository Done. <br /><pre>", Result, "</pre>"]),
     update_progress(TargetId, [{message, Message}, {done, true}], Context1).

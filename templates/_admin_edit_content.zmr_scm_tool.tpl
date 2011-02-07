@@ -14,13 +14,13 @@
 			</div>
 
 			<div class="form-item clearfix">
-				<label for="zmr_arg_checkout">{_ Checkout _}</label>
-				<input id="zmr_arg_checkout" type="text" name="zmr_arg_checkout" value="{{ r.zmr_arg_checkout }}" style="width: 80%" />
+				<label for="zmr_arg_clone">{_ Clone _}</label>
+				<input id="zmr_arg_clone" type="text" name="zmr_arg_clone" value="{{ r.zmr_arg_clone }}" style="width: 80%" />
 			</div>
 
 			<div class="form-item clearfix">
-				<label for="zmr_arg_history">{_ History _}</label>
-				<input id="zmr_arg_history" type="text" name="zmr_arg_history" value="{{ r.zmr_arg_history }}" style="width: 80%" />
+				<label for="zmr_arg_log">{_ Log _}</label>
+				<input id="zmr_arg_log" type="text" name="zmr_arg_log" value="{{ r.zmr_arg_log }}" style="width: 80%" />
 			</div>
 
 		</fieldset>

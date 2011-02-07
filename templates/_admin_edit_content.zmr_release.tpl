@@ -8,16 +8,16 @@
 	<div class="item">
 		<fieldset class="admin-form">
 		<div class="form-item clearfix">
-			<label for="zmr_branch">{_ Branch/Revision/Changeset _}</label>
-			<input id="zmr_branch" type="text" name="zmr_branch" value="{{ r.zmr_branch }}" />
+			<label for="zmr_changeset">{_ Changeset _}</label>
+			<input id="zmr_changeset" type="text" name="zmr_changeset" value="{{ r.zmr_changeset }}" />
 			
 			{% button 
-				text=_"Show log" 
+				text=_"Select from log" 
 				action={dialog_open 
-					title="Select branch from log" 
-					template="_zmr_select_branch.tpl" 
-					repo=r.zmr_module_release|first 
-					target="zmr_branch"
+					title="Select changeset from log" 
+					template="_zmr_select_changeset.tpl" 
+					repo=r.s.zmr_repo_release|first 
+					target="zmr_changeset"
 				} 
 			%}
 
