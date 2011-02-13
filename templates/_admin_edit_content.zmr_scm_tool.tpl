@@ -23,6 +23,11 @@
 				<input id="zmr_arg_log" type="text" name="zmr_arg_log" value="{{ r.zmr_arg_log }}" style="width: 80%" />
 			</div>
 
+			<div class="form-item clearfix">
+				<label for="zmr_log_re">{_ Log Parser (Regular Expression, PCRE) _}</label>
+				<input id="zmr_log_re" type="text" name="zmr_log_re" value="{{ r.zmr_log_re }}" style="width: 80%" />
+			</div>
+
 		</fieldset>
 	</div>
 

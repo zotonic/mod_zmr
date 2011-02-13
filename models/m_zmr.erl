@@ -53,6 +53,8 @@ m_find_value(Key, #m{value={repo_log_entry, Entry}}, _Context) ->
 
 m_to_list(#m{value={repo_log, Log}}=M, _Context) ->
     [M#m{value={repo_log_entry, Entry}} || Entry <- Log];
+m_to_list(#m{value={repo_log_entry, Entry}}, _Context) ->
+    Entry;
 
 m_to_list(_, _) ->
     undefined.

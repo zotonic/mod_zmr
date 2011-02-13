@@ -68,7 +68,7 @@ repo_path(RepoId, Context) ->
     z_path:files_subdir(filename:join("zmr_repos", z_convert:to_list(RepoId)), Context).
 
 repo_source(RepoId, Context) ->
-    m_rsc:p(RepoId, zmr_repository_path, Context).
+    m_rsc:p(RepoId, zmr_repository_url, Context).
 
 get_cmd(RepoId, Context, [Op|Vars]) when is_atom(Op) ->
     OpProp = case Op of
@@ -125,7 +125,8 @@ datamodel() ->
 	 {title, <<"Mercurial (hg)">>},
 	 {zmr_command, <<"hg">>},
 	 {zmr_arg_clone, <<"clone --noupdate $source $target">>},
-	 {zmr_arg_log, <<"log">>}
+	 {zmr_arg_log, <<"log">>},
+	 {zmr_log_re, <<"">>}
 	]},
 
        {zmr_scm_git,
@@ -135,6 +136,7 @@ datamodel() ->
 	 {zmr_command, <<"git">>},
 	 {zmr_arg_clone, <<"clone --no-checkout $source $target">>},
 	 {zmr_arg_log, <<"log">>}
+	 {zmr_log_re, <<"">>}
 	]},
 	
        {zmr_repo,
@@ -143,7 +145,7 @@ datamodel() ->
 	 {title, <<"mod_zmr">>},
 	 {summary, <<"The Module for ZMR itself.">>},
 	 {body, <<"Zotonic Modules Repository (zmr) is a server for hosting releases of zotonic modules.">>},
-	 {zmr_repository_path, <<"https://bitbucket.astekk.se/zmr">>}
+	 {zmr_repository_url, <<"https://bitbucket.astekk.se/zmr">>}
 	]}
 %,
 %       {zmr_default_release,

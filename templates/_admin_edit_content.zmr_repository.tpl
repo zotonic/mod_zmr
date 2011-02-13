@@ -9,8 +9,8 @@
 <fieldset class="admin-form">
 
 <div class="form-item clearfix">
-<label for="zmr_repository_path">{_ Repository path _}</label>
-<input id="zmr_repository_path" type="text" name="zmr_repository_path" value="{{ r.zmr_repository_path }}" style="width: 80%" />
+<label for="zmr_repository_url">{_ Repository URL _}</label>
+<input id="zmr_repository_url" type="text" name="zmr_repository_url" value="{{ r.zmr_repository_url }}" style="width: 80%" />
 
 <div id="repo_status">
 {% if m.zmr.repo[id].exist %} 
