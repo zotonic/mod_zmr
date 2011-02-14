@@ -24,8 +24,13 @@
 			</div>
 
 			<div class="form-item clearfix">
-				<label for="zmr_log_re">{_ Log Parser (Regular Expression, PCRE) _}</label>
-				<input id="zmr_log_re" type="text" name="zmr_log_re" value="{{ r.zmr_log_re }}" style="width: 80%" />
+				<label for="zmr_log_re_split">{_ Split Log (Regular Expression, PCRE) _}</label>
+				<input id="zmr_log_re_split" type="text" name="zmr_log_re_split" value="{{ r.zmr_log_re_split }}" style="width: 80%" />
+			</div>
+
+			<div class="form-item clearfix">
+				<label for="zmr_log_re_parse">{_ Parse Log Entry (Regular Expression, PCRE) _}</label>
+				<input id="zmr_log_re_parse" type="text" name="zmr_log_re_parse" value="{{ r.zmr_log_re_parse }}" style="width: 80%" />
 			</div>
 
 		</fieldset>

@@ -32,13 +32,14 @@ event({postback, {clone_repo, RepoId}, _TriggerId, TargetId}, Context) ->
 
 
 clone_repo(TargetId, RepoId, Context) ->
-    Source = mod_zmr:repo_source(RepoId, Context),
-    Target = mod_zmr:repo_path(RepoId, Context),
-    Cmd = mod_zmr:get_cmd(RepoId, Context, 
-			  [clone, 
-			   {"\\$source", Source}, 
-			   {"\\$target", Target}
-			  ]),
+    Source = mod_zmr:get_repo_url(RepoId, Context),
+    Target = mod_zmr:get_repo_path(RepoId, Context),
+    Cmd = mod_zmr:get_scm_cmd(RepoId,
+			      [clone, 
+			       {"\\$source", Source}, 
+			       {"\\$target", Target}
+			      ],
+			      Context),
     Context1 = update_progress(TargetId, [{message, "Cloning repository..."}], Context),
     Result = os:cmd(Cmd),
     ?PRINT(Result),

@@ -39,22 +39,23 @@ m_find_value(Id, #m{value=repo} = M, Context) ->
 	    end
     end;
 
-m_find_value(log, #m{value={repo, Id}}=M, Context) ->
-    M#m{value={repo_log, get_repo_log(Id, Context)}};
+m_find_value(log, #m{value={repo, Id}}=_M, Context) ->
+%    M#m{value={repo_log, get_repo_log(Id, Context)}};
+    get_repo_log(Id, Context);
 
 m_find_value(exist, #m{value={repo, Id}}, Context) ->
-    filelib:is_dir(mod_zmr:repo_path(Id, Context));
+    filelib:is_dir(mod_zmr:get_repo_path(Id, Context)).
 
-m_find_value(Key, #m{value={repo_log_entry, Entry}}, _Context) ->
+%m_find_value(Key, #m{value={repo_log_entry, Entry}}, _Context) ->
     %?PRINT(Key),
     %?PRINT(Entry),
-    proplists:get_value(Key, Entry).
+%    proplists:get_value(Key, Entry).
 
 
-m_to_list(#m{value={repo_log, Log}}=M, _Context) ->
-    [M#m{value={repo_log_entry, Entry}} || Entry <- Log];
-m_to_list(#m{value={repo_log_entry, Entry}}, _Context) ->
-    Entry;
+%m_to_list(#m{value={repo_log, Log}}=M, _Context) ->
+%    [M#m{value={repo_log_entry, Entry}} || Entry <- Log];
+%m_to_list(#m{value={repo_log_entry, Entry}}, _Context) ->
+%    Entry;
 
 m_to_list(_, _) ->
     undefined.
@@ -65,35 +66,26 @@ m_value(#m{value={repo, Id}}, _Context) ->
 
 
 get_repo_log(Id, Context) -> 
-    Repo = mod_zmr:repo_path(Id, Context),
-    Cmd = lists:flatten(["cd ", Repo, " && ", mod_zmr:get_cmd(Id, Context, [log])]),
+    Repo = mod_zmr:get_repo_path(Id, Context),
+    ToolId = mod_zmr:get_scm_tool(Id, Context),
+    {ok, Split} = re:compile(mod_zmr:get_scm_log_split(ToolId, Context)),
+    {ok, Parse} = re:compile(mod_zmr:get_scm_log_parse(ToolId, Context)),
+    Cmd = lists:flatten(["cd ", Repo, " && ", mod_zmr:get_scm_cmd(ToolId, [log], Context)]),
     Output = os:cmd(Cmd),
     %?PRINT(Output),
-    {match, Match} = re:run(Output, "(?m)^(\\w+):\\s*(.*)$|^$", [global, {capture, all_but_first, list}]),
-    match_to_proplist(Match).
+    RawLog = [re:run(Entry, Parse, [global, {capture, [key, value], list}])
+	   || Entry <- re:split(Output, Split, [trim, {return, list}])],
+    rawlog_to_proplists(RawLog).
 
-%%
-% Matches are reversed after this conversion. Use lists:reverse to restore, if needed
 
-match_to_proplist([]) -> [];
-match_to_proplist(Match) -> match_to_proplist(Match, [[]]).
+rawlog_to_proplists([{match, Matches}|Rest]) -> [rawlog_to_proplists(Matches) | rawlog_to_proplists(Rest)];
+rawlog_to_proplists([nomatch|Rest]) -> rawlog_to_proplists(Rest);
+rawlog_to_proplists([[Key, Value]|MatchList]) -> [{fix_key(Key), Value} | rawlog_to_proplists(MatchList)];
+rawlog_to_proplists(_) -> [].
 
-%keeps props in order, but less efficient
-%match_to_proplist([[Key, Value]|MatchList], [H|Acc]) -> match_to_proplist(MatchList, [H++[{Key, Value}]|Acc]);
-% props in reverse order
-match_to_proplist([[Key, Value]|MatchList], [H|Acc]) -> 
-    match_to_proplist(MatchList, 
-		      [
-		       [{z_convert:to_atom(string:to_lower(Key)), Value}|H]
-		       |Acc
-		      ]
-		     );
-
-match_to_proplist([[]], Acc) -> Acc;
-
-% could call lists:reverse here to restore prop order, if needed
-match_to_proplist([[]|MatchList], Acc) -> match_to_proplist(MatchList, [[]|Acc]);
-
-match_to_proplist([], Acc) -> Acc.
-    
-
+fix_key(changeset) -> id;
+fix_key(commit) -> id;
+fix_key([]) -> fix_key(summary);
+fix_key(Key) when is_list(Key) -> fix_key(z_convert:to_atom(string:to_lower(Key)));
+fix_key(Key) when is_atom(Key) -> Key;
+fix_key(Key) -> fix_key(z_convert:to_atom(Key)).

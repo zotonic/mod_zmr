@@ -30,9 +30,12 @@
 %% interface functions
 -export([
 	 init/1,
-	 repo_path/2,
-	 repo_source/2,
-	 get_cmd/3
+	 get_repo_url/2,
+	 get_repo_path/2,
+	 get_scm_cmd/3,
+	 get_scm_tool/2,
+	 get_scm_log_split/2,
+	 get_scm_log_parse/2
 	]).
 
 %% gen_server interface functions
@@ -64,28 +67,35 @@ init(Context) ->
     ok.
 
 
-repo_path(RepoId, Context) ->
-    z_path:files_subdir(filename:join("zmr_repos", z_convert:to_list(RepoId)), Context).
-
-repo_source(RepoId, Context) ->
+get_repo_url(RepoId, Context) ->
     m_rsc:p(RepoId, zmr_repository_url, Context).
 
-get_cmd(RepoId, Context, [Op|Vars]) when is_atom(Op) ->
+get_repo_path(RepoId, Context) ->
+    z_path:files_subdir(filename:join("zmr_repos", z_convert:to_list(RepoId)), Context).
+
+get_scm_tool(RepoId, Context) ->
+    m_edge:object(RepoId, zmr_repo_scm, 1, Context).
+
+get_scm_log_split(ToolId, Context) ->
+    z_html:unescape(m_rsc:p(ToolId, zmr_log_re_split, Context)).
+
+get_scm_log_parse(ToolId, Context) ->
+    z_html:unescape(m_rsc:p(ToolId, zmr_log_re_parse, Context)).
+
+get_scm_cmd(ToolId, [Op|Vars], Context) when is_atom(Op) ->
     OpProp = case Op of
 		 clone -> zmr_arg_clone;
 		 log -> zmr_arg_log
 	     end,
-    ToolId = m_edge:object(RepoId, zmr_repo_scm, 1, Context),
     OpVal = z_convert:to_list(m_rsc:p(ToolId, OpProp, Context)),
     Args = lists:foldl(fun({From, To}, Arg) -> re:replace(Arg, From, To, [{return, list}]) end,
 		       OpVal,
 		       Vars),
     Exe = z_convert:to_list(m_rsc:p(ToolId, zmr_command, Context)),
-    Cmd = lists:flatten([Exe, " ", Args]),
-    %?PRINT(Cmd),
-    Cmd.
+    lists:flatten([Exe, " ", Args]).
 
-    
+
+
 datamodel() ->
     [
 
@@ -126,7 +136,8 @@ datamodel() ->
 	 {zmr_command, <<"hg">>},
 	 {zmr_arg_clone, <<"clone --noupdate $source $target">>},
 	 {zmr_arg_log, <<"log">>},
-	 {zmr_log_re, <<"">>}
+	 {zmr_log_re_split, <<"\\R\\R">>},
+	 {zmr_log_re_parse, <<"(?m)^(?<key>\\w+):\\s*(?<value>.*)$">>}
 	]},
 
        {zmr_scm_git,
@@ -135,11 +146,12 @@ datamodel() ->
 	 {title, <<"Git (git)">>},
 	 {zmr_command, <<"git">>},
 	 {zmr_arg_clone, <<"clone --no-checkout $source $target">>},
-	 {zmr_arg_log, <<"log">>}
-	 {zmr_log_re, <<"">>}
+	 {zmr_arg_log, <<"log">>},
+	 {zmr_log_re_split, <<"\\R\\s+.*\\R\\R">>},
+	 {zmr_log_re_parse, <<"(?m)^(?<key>\\w+)?:?\\s*(?<value>.*)$">>}
 	]},
 	
-       {zmr_repo,
+       {mod_zmr_repo,
 	zmr_repository,
 	[
 	 {title, <<"mod_zmr">>},
@@ -147,22 +159,11 @@ datamodel() ->
 	 {body, <<"Zotonic Modules Repository (zmr) is a server for hosting releases of zotonic modules.">>},
 	 {zmr_repository_url, <<"https://bitbucket.astekk.se/zmr">>}
 	]}
-%,
-%       {zmr_default_release,
-%	zmr_release,
-%	[
-%	 {title, <<"Default ZMR release (head)">>},
-%	 {zmr_branch, <<"default">>}
-%	]}
       ]},
 
      {edges,
       [
        {zmr_repo, zmr_repo_scm, zmr_scm_hg}
-%,
-%       {zmr_default_release, zmr_module_release, zmr_repo},
-%       {zmr_repo, relation, zmr_default_release},
-%       {zmr_default_release, relation, zmr_repo}
       ]}
 
     ].
