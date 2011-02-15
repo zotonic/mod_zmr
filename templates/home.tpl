@@ -6,7 +6,7 @@
     {{ m.rsc[id].body|show_media }}
 </div>
 
-{% for col in m.search[{query cat="zmr_repository" sort="pivot_title" pagelen=10000}]|vsplit_in:4 %}
+{% for col in m.search[{query cat="zmr_repository" sort="pivot_title" pagelen=10000}]|split_in:4 %}
 <div class="zp-25">
     <ul>
         {% for id in col %}
