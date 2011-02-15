@@ -19,6 +19,7 @@
     Project website: <a href="{{ m.rsc[id].website|default:m.rsc[id].zmr_repository_url }}">{{ m.rsc[id].website|default:m.rsc[id].zmr_repository_url }}</a>
 </p>
 
+{% include "_edit_button.tpl" %}
 
 <section id="comments">{% include "_comments.tpl" id=id %}</section>
 
