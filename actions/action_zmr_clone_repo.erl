@@ -34,7 +34,8 @@ event({postback, {clone_repo, RepoId}, _TriggerId, TargetId}, Context) ->
 clone_repo(TargetId, RepoId, Context) ->
     Source = mod_zmr:get_repo_url(RepoId, Context),
     Target = mod_zmr:get_repo_path(RepoId, Context),
-    Cmd = mod_zmr:get_scm_cmd(RepoId,
+    ToolId = mod_zmr:get_scm_tool(RepoId, Context),
+    Cmd = mod_zmr:get_scm_cmd(ToolId,
 			      [clone, 
 			       {"\\$source", Source}, 
 			       {"\\$target", Target}

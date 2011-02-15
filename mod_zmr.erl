@@ -25,7 +25,7 @@
 
 -mod_title("ZMR Server").
 -mod_description("A Zotonic module repository server.").
--mod_prio(800).
+-mod_prio(100).
 
 %% interface functions
 -export([
