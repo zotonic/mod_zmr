@@ -16,7 +16,7 @@
 
 <p>
     SCM system: {{ m.rsc[id].zmr_repo_scm.title  }}<br />
-    <a href="{{ m.rsc[id].zmr_repository_url }}">Visit repository site &raquo;</a>
+    Project website: <a href="{{ m.rsc[id].website|default:m.rsc[id].zmr_repository_url }}">m.rsc[id].website|default:m.rsc[id].zmr_repository_url</a>
 </p>
 
 
