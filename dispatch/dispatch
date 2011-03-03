@@ -1,3 +1,5 @@
 [
- {home, [], resource_page, [{template, "home.tpl"}, {id, page_home}]}
+ {home, [], resource_page, [{template, "home.tpl"}, {id, page_home}]},
+ {categories, ["categories"], resource_template, [{template, "categories.tpl"}]},
+ {keyword, ["category", id, slug], resource_page, [{template, "category.tpl"}, {cat, keyword}]}
 ].
