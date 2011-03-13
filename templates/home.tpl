@@ -1,5 +1,11 @@
 {% extends "base.tpl" %}
 
+{% block html_head_extra %}
+   
+{% endblock %}
+
+{#% block page_class %}ui-widget{% endblock %#}
+
 {% block content %}
 <div class="zp-100">
     <h1>{{ m.rsc[id].title }}</h1>
