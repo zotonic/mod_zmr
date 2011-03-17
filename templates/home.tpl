@@ -16,7 +16,7 @@
 <div class="zp-25">
     <ul>
         {% for id in col %}
-        <li>
+        <li class="padding">
 	  {% include "_zmr_mod_card.tpl" id=id %}
         </li>
         {% endfor %}
