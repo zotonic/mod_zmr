@@ -28,7 +28,7 @@
 -include_lib("zotonic.hrl").
 
 process_get(_ReqData, Context) ->
-    Result = z_search:search({'query', [{cat, zmr_repository}]}, Context),
+    Result = z_search:search({'query', [{cat, zmr_repository}]}, {1, 1000}, Context),
     Ids = Result#search_result.result,
     z_convert:to_json([repo_info(Id, Context) || Id <- Ids]).
 
