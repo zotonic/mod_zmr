@@ -28,18 +28,17 @@
 -include_lib("zotonic.hrl").
 
 process_get(_ReqData, Context) ->
-    Query = z_context:get_q(q,Context),
-    Result = case Query =/= undefined of
-                 true -> search(Query,Context);
-                 false -> search(all,Context)
-             end,
+    Query = z_context:get_q(q,Context, all),
+    Result = search(Query, Context),
     Ids = Result#search_result.result,
     z_convert:to_json([repo_info(Id, Context) || Id <- Ids]).
 
-search(all,Context)->
+search(undefined, Context) -> 
+    search(all, Context);
+search(all, Context)->
     z_search:search({'query', [{cat, zmr_repository}]}, Context);
-search(Query,Context)->
-    z_search:search({'query',[{cat,zmr_repository},{text, Query}]}, Context).
+search(Query, Context)->
+    z_search:search({'query', [{cat,zmr_repository},{text, Query}]}, Context).
 
 repo_info(Id, Context) ->
     ToolId = mod_zmr:get_scm_tool(Id, Context),
