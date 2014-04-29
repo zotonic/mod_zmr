@@ -24,7 +24,7 @@
 
 Zotonic >= 0.10:
 <pre>
-    zotonic modules install {{ m.rsc[id].title }}
+zotonic modules install {{ m.rsc[id].title }}
 </pre>
 
 Zotonic <= 0.9:
