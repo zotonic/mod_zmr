@@ -21,7 +21,13 @@
 
 
 <h2>Installation</h2>
-Zotonic >= 0.7:
+
+Zotonic >= 0.10:
+<pre>
+    zotonic modules install {{ m.rsc[id].title }}
+</pre>
+
+Zotonic <= 0.9:
 <pre>
 zotonic installmodule {{ m.rsc[id].title }}
 </pre>
@@ -30,6 +36,7 @@ Zotonic <= 0.6:
 <pre>
 {{ m.rsc[id].zmr_repo_scm.zmr_command }} clone {{ m.rsc[id].zmr_repository_url }} {{ m.rsc[id].title }}
 </pre>
+
 
 
 <section class="clearfix">{% include "_edit_button.tpl" %}</section>
