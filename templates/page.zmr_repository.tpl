@@ -9,10 +9,11 @@
 </p>
 
 <p>
-    <div class="left"><a href="{% url categories %}">Categories</a>:</div> {% include "_zmr_mod_category_links.tpl" %}<br />
-    SCM system: {{ m.rsc[id].zmr_repo_scm.title  }}<br />
-    {% if m.rsc[id].author %}Author: {{ m.rsc[id].author.title }}<br />{% endif %}
-    Project website: <a href="{{ m.rsc[id].website|default:m.rsc[id].zmr_repository_url }}">{{ m.rsc[id].website|default:m.rsc[id].zmr_repository_url }}</a>
+        <div class="pull-left"><a href="{% url categories %}">Categories</a>: </div> {% include "_zmr_mod_category_links.tpl" %}<br />
+
+        <span class="label label-default">SCM system</span> : {{ m.rsc[id].zmr_repo_scm.title  }}<br />
+        {% if m.rsc[id].author %}<span class="label label-default">Author</span>: {{ m.rsc[id].author.title }}<br />{% endif %}
+        <span class="label label-default">Project website</span>: <a href="{{ m.rsc[id].website|default:m.rsc[id].zmr_repository_url }}">{{ m.rsc[id].website|default:m.rsc[id].zmr_repository_url }}</a>
 </p>
 
 <p>
