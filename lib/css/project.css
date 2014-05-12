@@ -1,0 +1,75 @@
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+
+body > .container {
+  padding: 60px 15px 0;
+}
+.container .text-muted {
+  margin: 20px 0;
+}
+
+/*
+ * Override Bootstrap's default container.
+ */
+@media (min-width: 1200px) {
+  .container {
+    width: 960px;
+  }
+}
+
+.zmr-card {
+  min-height: 234px;
+  margin: 5px;
+}
+
+.modules-list ul{
+  padding-left: 0px;
+}
+
+ul.inline li {
+  display: inline;
+}
+
+input.form-field-error, textarea.form-field-error {
+  background: #FBE3E4;
+  color: #8A1F11;
+  border-color: #FBC2C4 #FBC2C4 #ee9b9e;
+  border-style: solid;
+  border-width: 1px 1px 2px;
+}
+
+#footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #f5f5f5;
+}
+
+#footer > .container {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+code {
+  font-size: 80%;
+}
+
+#footer ul.nav {
+  margin: 20px auto;
+}
+
+#footer ul li{
+  float:left;
+  margin-right: 5px;
+  padding: 3px
+}
