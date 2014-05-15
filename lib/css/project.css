@@ -1,5 +1,14 @@
 /* Sticky footer styles
 -------------------------------------------------- */
+/*
+ * Override Bootstrap's default container.
+ */
+@media (min-width: 1200px) {
+  .container {
+    width: 960px;
+  }
+}
+
 html {
   position: relative;
   min-height: 100%;
@@ -14,15 +23,6 @@ body > .container {
 }
 .container .text-muted {
   margin: 20px 0;
-}
-
-/*
- * Override Bootstrap's default container.
- */
-@media (min-width: 1200px) {
-  .container {
-    width: 960px;
-  }
 }
 
 .zmr-card {
@@ -44,6 +44,14 @@ input.form-field-error, textarea.form-field-error {
   border-color: #FBC2C4 #FBC2C4 #ee9b9e;
   border-style: solid;
   border-width: 1px 1px 2px;
+}
+
+.comments-list {
+  list-style-type: none;
+}
+
+.comments-list .col-sm-10 {
+  margin-top: -20px;
 }
 
 #footer {

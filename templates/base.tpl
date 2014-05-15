@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-{# Base TEXT template #}
 <html lang="{{ z_language|default:'en'|escape }}">
   <head>
     <meta charset="utf-8" />
@@ -12,7 +11,7 @@
     <meta name="author" content="Zotonic" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
+    <meta name="description" content="{{ m.config.site.title.value }}">
 
     <meta property="og:title" content="{% block title %}{{ m.site.title }}{% endblock %}"/>
     {% with m.rsc[id].media|first as first_media %}{% if first_media %}

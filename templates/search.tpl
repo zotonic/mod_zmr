@@ -47,7 +47,7 @@
 	        <input type="hidden" name="qcat" value="{{ q.qcat|escape }}" />
 		<input class="form-control" type="text" name="qs" value="" placeholder="{_ Search _} {_ modules _}" />
 		</div>
-		<button class="btn btn-default" type="submit">{_ Search _} {{ m.rsc[q.qcat].title }}</button>
+		<button class="btn btn-default btn-sm" type="submit">{_ Search _} {{ m.rsc[q.qcat].title }}</button>
 	</form>
 
 {% endblock %}
