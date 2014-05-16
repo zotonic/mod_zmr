@@ -27,8 +27,7 @@
         <![endif]-->
     {% all include "_html_head.tpl" %}
     {% lib
-            "css/bootstrap.min.css"
-            "css/bootstrap-theme.css"
+            "css/bootstrap.css"
             "css/project.css"
     %}
     {% block html_head_extra %}{% endblock %}
