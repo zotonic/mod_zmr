@@ -50,7 +50,7 @@ input.form-field-error, textarea.form-field-error {
   list-style-type: none;
 }
 
-.comments-list .col-sm-10 {
+.comments-list .col-sm-9 {
   margin-top: -20px;
 }
 
@@ -63,13 +63,18 @@ input.form-field-error, textarea.form-field-error {
   background-color: #f5f5f5;
 }
 
+code {
+  font-size: 80%;
+}
+
+#zmr-categories-list li {
+  list-style-type: square;
+  padding: 5px;
+}
+
 #footer > .container {
   padding-right: 15px;
   padding-left: 15px;
-}
-
-code {
-  font-size: 80%;
 }
 
 #footer ul.nav {
