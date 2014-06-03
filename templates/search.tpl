@@ -49,5 +49,5 @@
 		</div>
 		<button class="btn btn-default btn-sm" type="submit">{_ Search _} {{ m.rsc[q.qcat].title }}</button>
 	</form>
-
+        <br/>
 {% endblock %}

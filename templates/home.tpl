@@ -13,7 +13,7 @@
 </div>
 
 {% with m.search[{query cat="zmr_repository" sort="pivot_title" pagelen=m.config.site.pagelen.value}] as result %}
-        <div class="modules-list" class="clearfix">
+        <div class="modules-list row">
                 {% for id in  result %}
 	                {% include "_zmr_mod_card.tpl" id=id %}
                 {% endfor %}
