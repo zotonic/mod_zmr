@@ -11,12 +11,8 @@
                         <a class="navbar-brand" href="{% url home %}">{_ The Zotonic Module Repository _}</a>
                 </div>
                 <div class="collapse navbar-collapse">
-                        <ul class="nav navbar-nav">
-                                <li class="{% ifequal zotonic_dispatch 'home' %}active{% endifequal%}"><a href="{% url home %}">{_ Modules _}</a></li>
-                                <li class="{% ifequal zotonic_dispatch 'howto' %}active{% endifequal%}"><a href="{% url howto %}">{_ Howto _}</a></li>
-                                <li class="{% ifequal zotonic_dispatch 'submit' %}active{% endifequal%}"><a href="{% url submit %}">{_ Submit _}</a></li>
-                                <li class="{% ifequal zotonic_dispatch 'zmr_categories' %}active{% endifequal%}"><a href="{% url zmr_categories %}">{_ Browse Categories _}</a></li>
-                        </ul>
+                        <div class="pull-left">{% menu id=id menu_id='main_menu' %} </div>
+
                         <form class="navbar-form navbar-right" role="search" action="{% url search %}" method="get">
                                 <div class="form-group">
 	                                <input type="hidden" name="qcat" value="{{ q.qcat|escape }}" />

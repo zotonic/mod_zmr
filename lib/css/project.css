@@ -1,8 +1,4 @@
-/* Sticky footer styles
--------------------------------------------------- */
-/*
- * Override Bootstrap's default container.
- */
+/*  Override Bootstrap's default container. */
 @media (min-width: 1200px) {
   .container {
     width: 960px;
@@ -13,6 +9,7 @@ html {
   position: relative;
   min-height: 100%;
 }
+
 body {
   /* Margin bottom by footer height */
   margin-bottom: 60px;
@@ -21,6 +18,7 @@ body {
 body > .container {
   padding: 60px 15px 0;
 }
+
 .container .text-muted {
   margin: 20px 0;
 }
@@ -54,15 +52,6 @@ input.form-field-error, textarea.form-field-error {
   margin-top: -20px;
 }
 
-#footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  /* Set the fixed height of the footer here */
-  height: 60px;
-  background-color: #f5f5f5;
-}
-
 code {
   font-size: 80%;
 }
@@ -70,6 +59,37 @@ code {
 #zmr-categories-list li {
   list-style-type: square;
   padding: 5px;
+}
+
+ul#navigation {
+  padding: 3px;
+}
+
+ul#navigation li {
+  display: inline-block !important;
+}
+
+ul#navigation li a:link, ul#navigation li a {
+  color: #FFF;
+}
+
+ul#navigation li a:active, 
+ul#navigation li a:focus,
+ul#navigation li a:hover,
+ul#navigation li.active
+{
+  color: #FFF;
+  background-color: #006687
+}
+
+/* footer */
+#footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #f5f5f5;
 }
 
 #footer > .container {
