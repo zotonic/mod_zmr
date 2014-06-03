@@ -5,7 +5,7 @@
 
  {howto, ["howto"], controller_page, [ {template, "howto.tpl"}, {id, page_howto} ]},
  {submit, ["submit"], controller_page, [ {template, "submit.tpl"}, {id, page_submit} ]},
- {zmr_categories, ["categories"], controller_template, [ {template, "categories.tpl"} ]},
+ {zmr_categories, ["categories"], controller_template, [ {template, "categories.tpl"}, {id, page_zmr_categories} ]},
 
  %% Simple search page
  {search, ["search"], controller_template, [ {template, "search.tpl"} ]},
