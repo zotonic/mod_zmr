@@ -9,13 +9,24 @@
 </p>
 
 <p>
-        <div class="pull-left"><a href="{% url categories %}">Categories</a>: </div> {% include "_zmr_mod_category_links.tpl" %}<br />
+        {% if m.rsc[id].subject %}
+                <div class="pull-left"><a href="{% url categories %}">Categories</a>: </div> {% include "_zmr_mod_category_links.tpl" %}<br />
+        {% endif %}
 
-        <span class="label label-default">SCM system</span> : {{ m.rsc[id].zmr_repo_scm.title  }}<br />
-        {% if m.rsc[id].author %}<span class="label label-default">Author</span>: {{ m.rsc[id].author.title }}<br />{% endif %}
-        <span class="label label-default">Project website</span>: <a href="{{ m.rsc[id].website|default:m.rsc[id].zmr_repository_url }}">{{ m.rsc[id].website|default:m.rsc[id].zmr_repository_url }}</a>
+        <p>
+                <span class="label label-default">SCM system</span> : {{ m.rsc[id].zmr_repo_scm.title  }}<br />
+        </p>
+        <p>
+                {% if m.rsc[id].author %}<span class="label label-default">Author</span>: {{ m.rsc[id].author.title }}<br />{% endif %}
+        </p>
+        <p>
+                {% if m.rsc[id].website %}
+                        <span class="label label-default">Project website</span>: {{ m.rsc[id].website|urlize }}
+                {% elif m.rsc[id].zmr_repository_url %}
+                        <span class="label label-default">Project source url</span>: {{ m.rsc[id].zmr_repository_url|urlize }}
+                {% endif %}
+        </p>
 </p>
-
 <p>
     {{ m.rsc[id].body|show_media }}
 </p>
